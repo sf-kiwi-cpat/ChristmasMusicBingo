@@ -1,0 +1,51 @@
+<template>
+    <div class="caller-container">
+        <template if:true={isLoading}>
+            <div class="loading-container">
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </template>
+        
+        <template if:false={isLoading}>
+            <!-- Last Called Section -->
+            <template if:true={lastCalledSong}>
+                <div class={lastCalledClass}>
+                    <div class="last-called-label">Last Called</div>
+                    <div class="last-called-song">
+                        <div class="last-called-order">#{lastCalledSong.Order__c}</div>
+                        <div class="last-called-info">
+                            <div class="last-called-artist">{lastCalledSong.Game_Song__r.Artist__c}</div>
+                            <div class="last-called-name">{lastCalledSong.Game_Song__r.Name}</div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- Played Songs Panel -->
+            <div class="played-songs-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Played Songs</h2>
+                </div>
+                <template if:true={playedSongsList.length}>
+                    <div class="played-songs-list">
+                        <template for:each={playedSongsList} for:item="played">
+                            <div key={played.Id} class="played-song-item" data-played-song-id={played.Id}>
+                                <span class="order-badge">{played.Order__c}</span>
+                                <div class="song-info">
+                                    <div class="song-artist">{played.Game_Song__r.Artist__c}</div>
+                                    <div class="song-name">{played.Game_Song__r.Name}</div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template if:false={playedSongs.length}>
+                    <div class="empty-state">
+                        <p>No songs have been played yet.</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>
+

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0C8E01</headerColor>
+        <logo>AppIcon</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>true</shouldOverrideOrgTheme>
+    </brand>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>Christmas Bingo</label>
+    <navType>Console</navType>
+    <tabs>Game__c</tabs>
+    <tabs>Game_Song__c</tabs>
+    <tabs>Game_Song_Played__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Christmas_Bingo_UtilityBar</utilityBar>
+    <workspaceConfig>
+        <mappings>
+            <fieldName>Game__c</fieldName>
+            <tab>Game_Song_Played__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Game_Song__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Game__c</tab>
+        </mappings>
+    </workspaceConfig>
+</CustomApplication>

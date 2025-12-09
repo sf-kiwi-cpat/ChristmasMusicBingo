@@ -1,0 +1,87 @@
+<template>
+    <div class="selector-container">
+        <template if:true={isLoading}>
+            <div class="loading-container">
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </template>
+        
+        <template if:false={isLoading}>
+            <div class="header-section">
+                <h1 class="game-title">{activeGame.Event_Description__c}</h1>
+                <p class="subtitle">Select a song to mark as played</p>
+            </div>
+            
+            <div class="search-container">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search songs or artists..."
+                    value={searchTerm}
+                    oninput={handleSearchInput}
+                />
+            </div>
+            
+            <template if:true={hasAvailableSongs}>
+                <div class="songs-scroll-container">
+                    <template for:each={filteredSongs} for:item="song">
+                        <div 
+                            key={song.Id} 
+                            class="song-card" 
+                            onclick={handleSongSelect} 
+                            data-songid={song.Id}>
+                            <div class="song-artist">{song.Artist__c}</div>
+                            <div class="song-name">{song.Name}</div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template if:false={hasAvailableSongs}>
+                <div class="empty-state">
+                    <p>All songs have been played!</p>
+                </div>
+            </template>
+            
+            <!-- Played Songs Panel -->
+            <div class="played-songs-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Played Songs</h2>
+                    <template if:true={playedSongs.length}>
+                        <button 
+                            class="clear-all-button" 
+                            onclick={handleClearAll}
+                            title="Clear all played songs">
+                            Clear All
+                        </button>
+                    </template>
+                </div>
+                <template if:true={playedSongs.length}>
+                    <div class="played-songs-list">
+                        <template for:each={playedSongs} for:item="played">
+                            <div key={played.Id} class="played-song-item">
+                                <span class="order-badge">{played.Order__c}</span>
+                                <div class="song-info">
+                                    <div class="song-artist">{played.Game_Song__r.Artist__c}</div>
+                                    <div class="song-name">{played.Game_Song__r.Name}</div>
+                                </div>
+                                <button 
+                                    class="remove-button" 
+                                    data-playedsongid={played.Id}
+                                    onclick={handleRemoveSong}
+                                    title="Remove from played list">
+                                    ✕
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template if:false={playedSongs.length}>
+                    <div class="empty-state">
+                        <p>No songs have been played yet.</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>
+

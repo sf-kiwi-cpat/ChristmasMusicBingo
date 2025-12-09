@@ -1,0 +1,86 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c41e3a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#228b22;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f0f0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="58" fill="url(#bgGradient)" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Bingo card background -->
+  <rect x="20" y="25" width="80" height="70" rx="4" fill="url(#cardGradient)" stroke="#d4af37" stroke-width="2"/>
+  
+  <!-- Bingo card grid lines -->
+  <line x1="36" y1="25" x2="36" y2="95" stroke="#333" stroke-width="1.5"/>
+  <line x1="52" y1="25" x2="52" y2="95" stroke="#333" stroke-width="1.5"/>
+  <line x1="68" y1="25" x2="68" y2="95" stroke="#333" stroke-width="1.5"/>
+  <line x1="84" y1="25" x2="84" y2="95" stroke="#333" stroke-width="1.5"/>
+  
+  <line x1="20" y1="39" x2="100" y2="39" stroke="#333" stroke-width="1.5"/>
+  <line x1="20" y1="53" x2="100" y2="53" stroke="#333" stroke-width="1.5"/>
+  <line x1="20" y1="67" x2="100" y2="67" stroke="#333" stroke-width="1.5"/>
+  <line x1="20" y1="81" x2="100" y2="81" stroke="#333" stroke-width="1.5"/>
+  
+  <!-- Center square - FREE with Christmas tree -->
+  <rect x="52" y="53" width="16" height="14" fill="#228b22" rx="2"/>
+  <text x="60" y="62" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#fff" text-anchor="middle">FREE</text>
+  
+  <!-- Christmas tree in center -->
+  <path d="M 60 45 L 55 55 L 60 52 L 65 55 Z" fill="#c41e3a"/>
+  <path d="M 60 40 L 56 48 L 60 45 L 64 48 Z" fill="#c41e3a"/>
+  <rect x="59" y="55" width="2" height="4" fill="#8b4513"/>
+  
+  <!-- Marked squares (X marks) -->
+  <g stroke="#c41e3a" stroke-width="2" stroke-linecap="round">
+    <line x1="24" y1="29" x2="32" y2="37"/>
+    <line x1="32" y1="29" x2="24" y2="37"/>
+    
+    <line x1="56" y1="29" x2="64" y2="37"/>
+    <line x1="64" y1="29" x2="56" y2="37"/>
+    
+    <line x1="88" y1="29" x2="96" y2="37"/>
+    <line x1="96" y1="29" x2="88" y2="37"/>
+    
+    <line x1="24" y1="75" x2="32" y2="83"/>
+    <line x1="32" y1="75" x2="24" y2="83"/>
+    
+    <line x1="88" y1="75" x2="96" y2="83"/>
+    <line x1="96" y1="75" x2="88" y2="83"/>
+  </g>
+  
+  <!-- Musical note decoration -->
+  <g fill="#d4af37" transform="translate(15, 10)">
+    <ellipse cx="0" cy="0" rx="3" ry="2"/>
+    <path d="M 0 0 Q 2 2 4 0" stroke="#d4af37" stroke-width="1.5" fill="none"/>
+    <line x1="4" y1="0" x2="4" y2="4" stroke="#d4af37" stroke-width="1.5"/>
+  </g>
+  
+  <g fill="#d4af37" transform="translate(105, 10)">
+    <ellipse cx="0" cy="0" rx="3" ry="2"/>
+    <path d="M 0 0 Q 2 2 4 0" stroke="#d4af37" stroke-width="1.5" fill="none"/>
+    <line x1="4" y1="0" x2="4" y2="4" stroke="#d4af37" stroke-width="1.5"/>
+  </g>
+  
+  <!-- Snowflakes -->
+  <g stroke="#fff" stroke-width="1" fill="none" opacity="0.8">
+    <g transform="translate(10, 20)">
+      <line x1="0" y1="-3" x2="0" y2="3"/>
+      <line x1="-3" y1="0" x2="3" y2="0"/>
+      <line x1="-2" y1="-2" x2="2" y2="2"/>
+      <line x1="2" y1="-2" x2="-2" y2="2"/>
+    </g>
+    <g transform="translate(110, 100)">
+      <line x1="0" y1="-3" x2="0" y2="3"/>
+      <line x1="-3" y1="0" x2="3" y2="0"/>
+      <line x1="-2" y1="-2" x2="2" y2="2"/>
+      <line x1="2" y1="-2" x2="-2" y2="2"/>
+    </g>
+  </g>
+</svg>
