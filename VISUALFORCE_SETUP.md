@@ -71,6 +71,8 @@ Where `yourinstance` is your Salesforce instance name (e.g., `na1`, `eu1`, etc.)
 
 ### Object Permissions:
 - **Game__c**: Read
+- **Game_Song_List__c**: Read
+- **Game_Song_List_Item__c**: Read
 - **Game_Song__c**: Read
 - **Game_Song_Played__c**: Read, Create, **Delete** (required for removing songs)
 
@@ -123,11 +125,18 @@ If you set ChristmasBingoBoard as the default landing page:
    - `Active__c = true`
    - `Event_Description__c` = Your event description (e.g., "Family Christmas Party 2024")
 
-2. Create at least 24 **Game Song** records with:
+2. Create **Game Song** records with:
    - `Name` = Song name
    - `Artist__c` = Artist name (optional but recommended)
-   - `Spotify_URL__c` = Spotify link (optional)
-   - `Included_In_Game__c = true` (for songs to include in the game)
+
+3. Create a **Game Song List** record:
+   - `Name` = List name (e.g., "Classic Christmas Songs")
+   - Add at least 24 songs to the list via **Game Song List Items** related list
+
+4. Create a **Game** record with:
+   - `Active__c = true`
+   - `Event_Description__c` = Your event description
+   - `Game_Song_List__c` = Select the song list you created
 
 ## Advantages of Visualforce Pages
 
@@ -180,6 +189,8 @@ You can add navigation links between pages:
 
 **Required Permissions:**
 - Game__c: Read
+- Game_Song_List__c: Read
+- Game_Song_List_Item__c: Read
 - Game_Song__c: Read  
 - Game_Song_Played__c: Read, Create, **Delete** (required for removing songs)
 - GameController: Enabled

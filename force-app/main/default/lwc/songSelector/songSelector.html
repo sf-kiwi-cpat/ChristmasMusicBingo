@@ -8,9 +8,24 @@
         
         <template if:false={isLoading}>
             <div class="header-section">
-                <h1 class="game-title">{activeGame.Event_Description__c}</h1>
-                <p class="subtitle">Select a song to mark as played</p>
+                <div class="header-top">
+                    <h1 class="game-title">{activeGame.Event_Description__c}</h1>
+                    <button 
+                        class="admin-toggle-button" 
+                        onclick={handleToggleAdminMode}
+                        title={adminToggleTitle}>
+                        <template if:true={adminMode}>Caller</template>
+                        <template if:false={adminMode}>Admin</template>
+                    </button>
+                </div>
+                <p class="subtitle">
+                    <template if:true={adminMode}>Manage songs, lists, and games</template>
+                    <template if:false={adminMode}>Select a song to mark as played</template>
+                </p>
             </div>
+            
+            <!-- Caller Mode -->
+            <template if:false={adminMode}>
             
             <div class="search-container">
                 <input 
@@ -81,6 +96,395 @@
                     </div>
                 </template>
             </div>
+            </template>
+            
+            <!-- Admin Mode -->
+            <template if:true={adminMode}>
+                <div class="admin-container">
+                    <!-- Admin Tabs -->
+                    <div class="admin-tabs">
+                        <button 
+                            class={songsTabClass}
+                            data-tab="songs"
+                            onclick={handleAdminTabChange}>
+                            Songs
+                        </button>
+                        <button 
+                            class={listsTabClass}
+                            data-tab="lists"
+                            onclick={handleAdminTabChange}>
+                            Lists
+                        </button>
+                        <button 
+                            class={gamesTabClass}
+                            data-tab="games"
+                            onclick={handleAdminTabChange}>
+                            Games
+                        </button>
+                    </div>
+                    
+                    <!-- Songs Tab -->
+                    <template if:true={isSongsTab}>
+                        <div class="admin-section">
+                            <div class="admin-section-header">
+                                <h2>Manage Songs</h2>
+                                <button class="admin-button primary" onclick={handleNewSong}>
+                                    + New Song
+                                </button>
+                            </div>
+                            
+                            <!-- Create/Edit Song Form -->
+                            <template if:true={showSongForm}>
+                            <div class="admin-form">
+                                <h3>{songFormTitle}</h3>
+                                <div class="form-group">
+                                    <label>Song Name *</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-input" 
+                                        value={newSongName}
+                                        oninput={handleSongNameChange}
+                                        placeholder="Enter song name"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label>Artist</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-input" 
+                                        value={newSongArtist}
+                                        oninput={handleSongArtistChange}
+                                        placeholder="Enter artist name"
+                                    />
+                                </div>
+                                <div class="form-actions">
+                                    <button class="admin-button primary" onclick={handleSaveSong}>
+                                        Save
+                                    </button>
+                                    <button class="admin-button secondary" onclick={handleCancelEditSong}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            </template>
+                            
+                            <!-- Songs Search -->
+                            <div class="admin-search-container">
+                                <input 
+                                    type="text" 
+                                    class="admin-search-input" 
+                                    placeholder="Search songs or artists..."
+                                    value={adminSongSearchTerm}
+                                    oninput={handleAdminSongSearchInput}
+                                />
+                            </div>
+                            
+                            <!-- Songs List -->
+                            <div class="admin-list compact">
+                                <template for:each={filteredAdminSongs} for:item="song">
+                                    <div key={song.Id} class="admin-list-item compact">
+                                        <div class="admin-list-item-content compact">
+                                            <div class="song-info compact">
+                                                <span class="song-name compact">{song.Name}</span>
+                                                <span class="song-artist compact">{song.Artist__c}</span>
+                                            </div>
+                                            <div class="admin-list-item-actions">
+                                                <button 
+                                                    class="admin-button-icon" 
+                                                    data-songid={song.Id}
+                                                    onclick={handleEditSong}
+                                                    title="Edit song">
+                                                    ✏️
+                                                </button>
+                                                <button 
+                                                    class="admin-button-icon danger" 
+                                                    data-songid={song.Id}
+                                                    onclick={handleDeleteSong}
+                                                    title="Delete song">
+                                                    🗑️
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    <!-- Lists Tab -->
+                    <template if:true={isListsTab}>
+                        <div class="admin-section">
+                            <div class="admin-section-header">
+                                <h2>Manage Lists</h2>
+                                <button class="admin-button primary" onclick={handleNewList}>
+                                    + New List
+                                </button>
+                            </div>
+                            
+                            <!-- Create/Edit List Form -->
+                            <template if:true={showListForm}>
+                            <div class="admin-form">
+                                <h3>{listFormTitle}</h3>
+                                <div class="form-group">
+                                    <label>List Name *</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-input" 
+                                        value={newListName}
+                                        oninput={handleListNameChange}
+                                        placeholder="Enter list name"
+                                    />
+                                </div>
+                                <div class="form-actions">
+                                    <button class="admin-button primary" onclick={handleSaveList}>
+                                        Save
+                                    </button>
+                                    <button class="admin-button secondary" onclick={handleCancelEditList}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            </template>
+                            
+                            <!-- Lists List -->
+                            <div class="admin-list">
+                                <template for:each={allLists} for:item="list">
+                                    <div key={list.Id} class={list.cssClass}>
+                                        <div class="admin-list-item-content" 
+                                             data-listid={list.Id}
+                                             onclick={handleSelectList}>
+                                            <div class="list-name">{list.Name}</div>
+                                        </div>
+                                        <div class="admin-list-item-actions">
+                                            <button 
+                                                class="admin-button-icon" 
+                                                data-listid={list.Id}
+                                                onclick={handleCloneList}
+                                                title="Clone list">
+                                                📋
+                                            </button>
+                                            <button 
+                                                class="admin-button-icon" 
+                                                data-listid={list.Id}
+                                                onclick={handleEditList}
+                                                title="Edit list">
+                                                ✏️
+                                            </button>
+                                            <button 
+                                                class="admin-button-icon danger" 
+                                                data-listid={list.Id}
+                                                onclick={handleDeleteList}
+                                                title="Delete list">
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            
+                            <!-- Instructions when no list selected -->
+                            <template if:false={hasSelectedList}>
+                                <div class="admin-instructions">
+                                    <p>👆 Select a list above to manage its songs</p>
+                                </div>
+                            </template>
+                            
+                            <!-- Selected List Songs Management -->
+                            <template if:true={hasSelectedList}>
+                                <div class="admin-list-detail">
+                                    <div class="list-management-header">
+                                        <h3>{selectedListName} - Song Management</h3>
+                                        <div class="list-song-counter">
+                                            <span class={counterValueClass}>
+                                                {listSongCount} songs
+                                            </span>
+                                            <span class="counter-help">
+                                                Minimum: 24 required | Recommended: 75
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="list-management-actions">
+                                        <button 
+                                            class="admin-button primary" 
+                                            onclick={handleSaveListChanges}
+                                            disabled={hasNoUnsavedChanges}>
+                                            Save Changes
+                                        </button>
+                                        <button 
+                                            class="admin-button secondary" 
+                                            onclick={handleCancelListChanges}
+                                            disabled={hasNoUnsavedChanges}>
+                                            Cancel
+                                        </button>
+                                        <template if:true={hasUnsavedChanges}>
+                                            <span class="unsaved-indicator">● Unsaved changes</span>
+                                        </template>
+                                    </div>
+                                    
+                                    <div class="two-list-container">
+                                        <!-- Available Songs -->
+                                        <div class="list-column">
+                                            <h4 class="list-column-header">
+                                                Available Songs ({workingAvailableSongs.length})
+                                            </h4>
+                                            <div class="admin-list compact scrollable">
+                                                <template for:each={workingAvailableSongs} for:item="song">
+                                                    <div key={song.songId} class="admin-list-item compact">
+                                                        <div class="admin-list-item-content compact">
+                                                            <div class="song-info compact">
+                                                                <span class="song-name compact">{song.Name}</span>
+                                                                <span class="song-artist compact">{song.Artist__c}</span>
+                                                            </div>
+                                                        </div>
+                                                        <button 
+                                                            class="admin-button-icon add" 
+                                                            data-songid={song.songId}
+                                                            onclick={handleMoveSongToIncluded}
+                                                            title="Add to list">
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Songs in List -->
+                                        <div class="list-column">
+                                            <h4 class="list-column-header">
+                                                Songs in List ({listSongCount})
+                                            </h4>
+                                            <div class="admin-list compact scrollable">
+                                                <template for:each={workingListSongs} for:item="song">
+                                                    <div key={song.songId} class="admin-list-item compact">
+                                                        <div class="admin-list-item-content compact">
+                                                            <div class="song-info compact">
+                                                                <span class="song-name compact">{song.songName}</span>
+                                                                <span class="song-artist compact">{song.songArtist}</span>
+                                                            </div>
+                                                        </div>
+                                                        <button 
+                                                            class="admin-button-icon danger" 
+                                                            data-songid={song.songId}
+                                                            onclick={handleMoveSongToAvailable}
+                                                            title="Remove from list">
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    
+                    <!-- Games Tab -->
+                    <template if:true={isGamesTab}>
+                        <div class="admin-section">
+                            <div class="admin-section-header">
+                                <h2>Manage Games</h2>
+                                <button class="admin-button primary" onclick={handleNewGame}>
+                                    + New Game
+                                </button>
+                            </div>
+                            
+                            <!-- Create/Edit Game Form -->
+                            <template if:true={showGameForm}>
+                            <div class="admin-form">
+                                <h3>{gameFormTitle}</h3>
+                                <div class="form-group">
+                                    <label>Event Description *</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-input" 
+                                        value={newGameDescription}
+                                        oninput={handleGameDescriptionChange}
+                                        placeholder="Enter event description"
+                                    />
+                                </div>
+                                <div class="form-group">
+                                    <label>Song List *</label>
+                                    <select 
+                                        class="form-input" 
+                                        onchange={handleGameListChange}>
+                                        <option value="">-- Select a List --</option>
+                                        <template for:each={allLists} for:item="list">
+                                            <option key={list.Id} value={list.Id} selected={list.isSelected}>{list.Name}</option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={newGameActive}
+                                            onchange={handleGameActiveChange}
+                                        />
+                                        Set as Active Game
+                                    </label>
+                                </div>
+                                <div class="form-actions">
+                                    <button class="admin-button primary" onclick={handleSaveGame}>
+                                        Save
+                                    </button>
+                                    <button class="admin-button secondary" onclick={handleCancelEditGame}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            </template>
+                            
+                            <!-- Games List -->
+                            <div class="admin-list">
+                                <template for:each={allGames} for:item="game">
+                                    <div key={game.Id} class="admin-list-item">
+                                        <div class="admin-list-item-content">
+                                            <div class="game-info">
+                                                <div class="game-name">
+                                                    {game.Event_Description__c}
+                                                    <template if:true={game.Active__c}>
+                                                        <span class="active-badge">Active</span>
+                                                    </template>
+                                                </div>
+                                                <div class="game-details">
+                                                    List: {game.Game_Song_List__r.Name}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="admin-list-item-actions">
+                                            <template if:false={game.Active__c}>
+                                                <button 
+                                                    class="admin-button small" 
+                                                    data-gameid={game.Id}
+                                                    onclick={handleSetActiveGame}
+                                                    title="Set as active">
+                                                    Set Active
+                                                </button>
+                                            </template>
+                                            <button 
+                                                class="admin-button-icon" 
+                                                data-gameid={game.Id}
+                                                onclick={handleEditGame}
+                                                title="Edit game">
+                                                ✏️
+                                            </button>
+                                            <button 
+                                                class="admin-button-icon danger" 
+                                                data-gameid={game.Id}
+                                                onclick={handleDeleteGame}
+                                                title="Delete game">
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
         </template>
     </div>
 </template>

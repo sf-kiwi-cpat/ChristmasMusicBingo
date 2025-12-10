@@ -44,6 +44,8 @@ After deployment, you need to grant permissions:
 1. Go to **Setup** → **Users** → **Profiles** (or **Permission Sets**)
 2. For the profile/users who will access the site:
    - **Object Settings** → **Game** → Enable Read access
+   - **Object Settings** → **Game Song List** → Enable Read access
+   - **Object Settings** → **Game Song List Item** → Enable Read access
    - **Object Settings** → **Game Song** → Enable Read access  
    - **Object Settings** → **Game Song Played** → Enable Read access (and Create for callers)
    - **Field Settings** → Grant access to all fields on these objects
@@ -51,21 +53,35 @@ After deployment, you need to grant permissions:
 
 ## Step 4: Create Initial Data
 
+### Create Game Songs:
+1. Go to **Game Song** tab
+2. Create all your Christmas songs (you'll need at least 24 songs per list)
+3. For each song:
+   - Enter the **Song Name** (e.g., "Jingle Bells")
+   - Enter the **Artist** (e.g., "Bing Crosby")
+4. Save all songs
+
+**Quick Data Entry Tip:** You can use Data Loader or the Salesforce API to bulk import songs.
+
+### Create a Game Song List:
+1. Go to **Game Song List** tab
+2. Create a new Game Song List record
+3. Enter a **List Name** (e.g., "Classic Christmas Songs")
+4. Save the list
+5. Add songs to the list:
+   - On the Game Song List record, use the related list "Game Song List Items"
+   - Click **New** to add songs to the list
+   - Select a **Game Song** from the dropdown
+   - Optionally set an **Order** number
+   - Repeat until you have at least 24 songs in the list
+
 ### Create a Game:
 1. Go to **Game** tab (or use Developer Console)
 2. Create a new Game record
 3. Set **Active** checkbox to `true`
-4. Save
-
-### Create Game Songs:
-1. Go to **Game Song** tab
-2. Create at least 24 songs (you need 24 for a 5x5 board)
-3. For each song:
-   - Enter the **Song Name** (e.g., "Jingle Bells")
-   - Optionally add **Spotify URL**
-4. Save all songs
-
-**Quick Data Entry Tip:** You can use Data Loader or the Salesforce API to bulk import songs.
+4. Enter **Event Description** (e.g., "Family Christmas Party 2024")
+5. **Select a Game Song List** - Choose the song list you created above
+6. Save
 
 ## Step 5: Set Up Visualforce Pages and Salesforce Site
 
@@ -139,7 +155,7 @@ See `SETUP_GUIDE.md` Step 5 for detailed instructions on setting up a custom dom
 
 ### Runtime Errors:
 - **"No active game found":** Create a Game record with Active = true
-- **"Not enough songs":** Create at least 24 Game Song records with Included_In_Game__c = true
+- **"Not enough songs":** Ensure the Game has a Game_Song_List__c assigned and the list has at least 24 songs (via Game_Song_List_Item__c records)
 - **Permission errors:** Check Guest User Profile permissions (see `SETUP_GUIDE.md` Step 6)
 - **Components not loading:** Verify Lightning Out is working and LWC components have `lightning__Visualforce` target
 - **Pages not accessible:** Verify site is Active and custom domain is configured (see `SETUP_GUIDE.md` Step 5)

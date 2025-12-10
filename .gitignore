@@ -5716,3 +5716,7 @@ config/project-scratch-def.json
 .sfdx/orgs/trailsignup.31982ecb278a6c@salesforce.com/metadata/CustomApplication.json
 .sfdx/orgs/trailsignup.31982ecb278a6c@salesforce.com/metadata/LightningBolt.json
 .sfdx/orgs/trailsignup.31982ecb278a6c@salesforce.com/metadata/metadataTypes.json
+.sfdx/typings/lwc/apex/AdminController.d.ts
+LWC_CODING_GUIDELINES.md
+CREATE_XMAS_PARTY_LIST.txt
+CREATE_XMAS_PARTY_LIST_COMPLETE.apex

@@ -50,7 +50,7 @@ public without sharing class CallerController {
             
             // Return the full record with related data
             return [
-                SELECT Id, Game__c, Game_Song__c, Game_Song__r.Name, Game_Song__r.Artist__c, Game_Song__r.Spotify_URL__c, Order__c
+                SELECT Id, Game__c, Game_Song__c, Game_Song__r.Name, Game_Song__r.Artist__c, Order__c
                 FROM Game_Song_Played__c
                 WHERE Id = :played.Id
                 LIMIT 1
@@ -67,16 +67,34 @@ public without sharing class CallerController {
     public static List<Game_Song__c> getAvailableSongs(String gameId) {
         try {
             // Check CRUD permissions
-            if (!Schema.sObjectType.Game_Song__c.isAccessible() || 
+            if (!Schema.sObjectType.Game__c.isAccessible() ||
+                !Schema.sObjectType.Game_Song_List_Item__c.isAccessible() ||
+                !Schema.sObjectType.Game_Song__c.isAccessible() || 
                 !Schema.sObjectType.Game_Song_Played__c.isAccessible()) {
                 throw new AuraHandledException('Insufficient access to Game Song objects');
             }
             
-            // Get all songs (only those included in the game)
+            // Get the game and its song list
+            List<Game__c> games = [
+                SELECT Id, Game_Song_List__c 
+                FROM Game__c 
+                WHERE Id = :gameId 
+                LIMIT 1
+            ];
+            
+            if (games.isEmpty() || games[0].Game_Song_List__c == null) {
+                return new List<Game_Song__c>();
+            }
+            
+            // Get all songs from the game's song list
             List<Game_Song__c> allSongs = [
-                SELECT Id, Name, Artist__c, Spotify_URL__c 
+                SELECT Id, Name, Artist__c 
                 FROM Game_Song__c 
-                WHERE Included_In_Game__c = true
+                WHERE Id IN (
+                    SELECT Game_Song__c 
+                    FROM Game_Song_List_Item__c 
+                    WHERE Game_Song_List__c = :games[0].Game_Song_List__c
+                )
                 ORDER BY Name
             ];
             
@@ -116,7 +134,7 @@ public without sharing class CallerController {
             }
             
             return [
-                SELECT Id, Game_Song__r.Id, Game_Song__r.Name, Game_Song__r.Artist__c, Game_Song__r.Spotify_URL__c, Order__c
+                SELECT Id, Game_Song__r.Id, Game_Song__r.Name, Game_Song__r.Artist__c, Order__c
                 FROM Game_Song_Played__c
                 WHERE Game__c = :gameId
                 ORDER BY Order__c ASC

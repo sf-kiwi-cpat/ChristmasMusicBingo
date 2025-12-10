@@ -12,7 +12,7 @@ public without sharing class GameController {
             }
             
             List<Game__c> games = [
-                SELECT Id, Name, Active__c, Event_Description__c 
+                SELECT Id, Name, Active__c, Event_Description__c, Game_Song_List__c 
                 FROM Game__c 
                 WHERE Active__c = true 
                 LIMIT 1
@@ -27,20 +27,26 @@ public without sharing class GameController {
     }
     
     /**
-     * Get all available game songs (only those included in the game)
+     * Get all available game songs from the active game's song list
      */
     @AuraEnabled(cacheable=true)
     public static List<Game_Song__c> getAllGameSongs() {
         try {
-            // Check CRUD permission
-            if (!Schema.sObjectType.Game_Song__c.isAccessible()) {
-                throw new AuraHandledException('Insufficient access to Game Song object');
+            // Get the active game
+            Game__c activeGame = getActiveGame();
+            if (activeGame == null || activeGame.Game_Song_List__c == null) {
+                return new List<Game_Song__c>();
             }
             
+            // Get songs through Game -> Game_Song_List -> Game_Song_List_Item -> Game_Song
             return [
-                SELECT Id, Name, Spotify_URL__c 
+                SELECT Id, Name 
                 FROM Game_Song__c 
-                WHERE Included_In_Game__c = true
+                WHERE Id IN (
+                    SELECT Game_Song__c 
+                    FROM Game_Song_List_Item__c 
+                    WHERE Game_Song_List__c = :activeGame.Game_Song_List__c
+                )
                 ORDER BY Name
             ];
         } catch (Exception e) {
@@ -94,7 +100,7 @@ public without sharing class GameController {
             }
             
             List<Game_Song_Played__c> playedRecords = [
-                SELECT Id, Game_Song__r.Id, Game_Song__r.Name, Game_Song__r.Spotify_URL__c, Order__c
+                SELECT Id, Game_Song__r.Id, Game_Song__r.Name, Order__c
                 FROM Game_Song_Played__c
                 WHERE Game__c = :gameId
                 ORDER BY Order__c ASC

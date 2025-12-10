@@ -15,6 +15,7 @@
     <label>Christmas Bingo</label>
     <navType>Console</navType>
     <tabs>Game__c</tabs>
+    <tabs>Game_Song_List__c</tabs>
     <tabs>Game_Song__c</tabs>
     <tabs>Game_Song_Played__c</tabs>
     <uiType>Lightning</uiType>
@@ -29,6 +30,9 @@
         </mappings>
         <mappings>
             <tab>Game__c</tab>
+        </mappings>
+        <mappings>
+            <tab>Game_Song_List__c</tab>
         </mappings>
     </workspaceConfig>
 </CustomApplication>

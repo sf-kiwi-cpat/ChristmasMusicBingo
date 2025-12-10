@@ -29,6 +29,8 @@ If the bingo board gets stuck on the loading spinner for guest users, check the 
 1. In the Guest User Profile, go to **Object Settings**
 2. Enable the following:
    - **Game__c**: Read
+   - **Game_Song_List__c**: Read
+   - **Game_Song_List_Item__c**: Read
    - **Game_Song__c**: Read
    - **Game_Song_Played__c**: Read, Create, **Delete** (required for removing songs)
 3. Click **Save**
@@ -41,12 +43,14 @@ If the bingo board gets stuck on the loading spinner for guest users, check the 
 
 **Solution:**
 1. In the Guest User Profile, go to **Field-Level Security**
-2. For each object (Game__c, Game_Song__c, Game_Song_Played__c):
+2. For each object (Game__c, Game_Song_List__c, Game_Song_List_Item__c, Game_Song__c, Game_Song_Played__c):
    - Click **View Field Accessibility**
    - Ensure all fields are set to **Readable** (and **Editable** for Game_Song_Played__c fields)
 3. Required fields:
-   - **Game__c**: Id, Name, Active__c, Event_Description__c
-   - **Game_Song__c**: Id, Name, Spotify_URL__c, Artist__c, Included_In_Game__c
+   - **Game__c**: Id, Name, Active__c, Event_Description__c, Game_Song_List__c
+   - **Game_Song_List__c**: Id, Name
+   - **Game_Song_List_Item__c**: Id, Game_Song_List__c, Game_Song__c, Order__c
+   - **Game_Song__c**: Id, Name, Artist__c
    - **Game_Song_Played__c**: Id, Game__c, Game_Song__c, Order__c
 
 ### 4. No Active Game

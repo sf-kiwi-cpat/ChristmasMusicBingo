@@ -10,14 +10,22 @@ This Salesforce package creates a Christmas Music Bingo game that can be played 
    - `Name` (Auto-number)
    - `Active__c` (Checkbox) - Only one game should be active at a time
    - `Event_Description__c` (Text) - Description/name of the event (e.g., "Family Christmas Party 2024")
+   - `Game_Song_List__c` (Lookup to Game_Song_List__c) - The song list to use for this game
 
-2. **Game_Song__c** - All available Christmas songs
+2. **Game_Song_List__c** - Pre-defined list of songs that can be used for games
+   - `Name` (Text) - List name (e.g., "Classic Christmas Songs", "Modern Holiday Hits")
+
+3. **Game_Song_List_Item__c** - Junction object linking songs to song lists
+   - `Game_Song_List__c` (Master-Detail to Game_Song_List__c)
+   - `Game_Song__c` (Master-Detail to Game_Song__c)
+   - `Order__c` (Number) - Optional ordering of songs in the list
+
+4. **Game_Song__c** - All available Christmas songs
    - `Name` (Text) - Song name
    - `Artist__c` (Text) - Artist name
-   - `Spotify_URL__c` (URL) - Link to the song on Spotify (optional)
-   - `Included_In_Game__c` (Checkbox) - Whether this song should be included in the game (default: true)
+   - `Included_In_Game__c` (Checkbox) - **Note: This field is no longer used. Songs are now associated with games through Game_Song_List__c.**
 
-3. **Game_Song_Played__c** - Junction object tracking played songs
+5. **Game_Song_Played__c** - Junction object tracking played songs
    - `Game__c` (Lookup to Game__c)
    - `Game_Song__c` (Lookup to Game_Song__c)
    - `Order__c` (Number) - The order in which the song was played
@@ -58,26 +66,42 @@ sfdx force:source:deploy -p force-app -u YourOrgAlias --dry-run
 
 ## Step 2: Create Initial Data
 
+### Create Game Songs:
+1. Go to **Game Song** tab
+2. Create all your Christmas songs (you'll need at least 24 songs per list)
+3. For each song:
+   - Enter the **Song Name** (e.g., "Jingle Bells")
+   - Enter the **Artist** (e.g., "Bing Crosby")
+4. Save all songs
+
+**Quick Data Entry Tip:** You can use Data Loader or the Salesforce API to bulk import songs.
+
+### Create a Game Song List:
+1. Go to **Game Song List** tab
+2. Create a new Game Song List record
+3. Enter a **List Name** (e.g., "Classic Christmas Songs", "Modern Holiday Hits")
+4. Save the list
+5. Add songs to the list:
+   - On the Game Song List record, use the related list "Game Song List Items"
+   - Click **New** to add songs to the list
+   - Select a **Game Song** from the dropdown
+   - Optionally set an **Order** number to control the sequence
+   - Repeat until you have at least 24 songs in the list
+
+**Note:** You can create multiple song lists (e.g., one for kids, one for adults) and swap between them by changing the Game Song List on a Game record.
+
 ### Create a Game:
 1. Go to **Game** tab (or use Developer Console)
 2. Create a new Game record
 3. Set **Active** checkbox to `true`
 4. Enter **Event Description** (e.g., "Family Christmas Party 2024")
-5. Save
+5. **Select a Game Song List** - Choose the song list you created above
+6. Save
 
-**Important:** Only one Game should have `Active__c = true` at a time.
-
-### Create Game Songs:
-1. Go to **Game Song** tab
-2. Create at least 24 songs (you need 24 for a 5x5 board - 25 squares minus the center FREE square)
-3. For each song:
-   - Enter the **Song Name** (e.g., "Jingle Bells")
-   - Enter the **Artist** (e.g., "Bing Crosby")
-   - Optionally add **Spotify URL**
-   - Ensure **Included In Game** is checked (default: true)
-4. Save all songs
-
-**Quick Data Entry Tip:** You can use Data Loader or the Salesforce API to bulk import songs.
+**Important:** 
+- Only one Game should have `Active__c = true` at a time
+- The Game must have a Game Song List assigned for songs to appear
+- The Game Song List must have at least 24 songs for boards to generate
 
 ## Step 3: Create a Salesforce Site
 
@@ -137,13 +161,17 @@ This is critical for guest users to access the pages and functionality.
 
 ### Object Permissions:
 - **Game__c**: Read
+- **Game_Song_List__c**: Read
+- **Game_Song_List_Item__c**: Read
 - **Game_Song__c**: Read
 - **Game_Song_Played__c**: Read, Create, **Delete** (required for removing songs)
 
 ### Field Permissions:
 For each object above, ensure all fields are accessible:
-- **Game__c**: Id, Name, Active__c, Event_Description__c
-- **Game_Song__c**: Id, Name, Artist__c, Spotify_URL__c, Included_In_Game__c
+- **Game__c**: Id, Name, Active__c, Event_Description__c, Game_Song_List__c
+- **Game_Song_List__c**: Id, Name
+- **Game_Song_List_Item__c**: Id, Game_Song_List__c, Game_Song__c, Order__c
+- **Game_Song__c**: Id, Name, Artist__c
 - **Game_Song_Played__c**: Id, Game__c, Game_Song__c, Order__c
 
 ### Apex Class Access:
@@ -305,6 +333,8 @@ The custom app "Christmas Bingo" includes tabs for all three custom objects:
 
 **Required Permissions (Guest User):**
 - Game__c: Read
+- Game_Song_List__c: Read
+- Game_Song_List_Item__c: Read
 - Game_Song__c: Read
 - Game_Song_Played__c: Read, Create, **Delete**
 - GameController: Enabled
@@ -312,8 +342,8 @@ The custom app "Christmas Bingo" includes tabs for all three custom objects:
 - All Visualforce pages: Enabled
 
 **Minimum Data Requirements:**
-- 1 Game record with `Active__c = true`
-- 24+ Game Song records with `Included_In_Game__c = true`
+- 1 Game Song List with at least 24 songs (via Game_Song_List_Item__c records)
+- 1 Game record with `Active__c = true` and `Game_Song_List__c` assigned
 
 ## Additional Resources
 
@@ -324,8 +354,10 @@ The custom app "Christmas Bingo" includes tabs for all three custom objects:
 ## Notes
 
 - Only one Game should have `Active__c = true` at a time
-- You need at least 24 songs in `Game_Song__c` with `Included_In_Game__c = true` to generate boards
+- Games must have a Game_Song_List__c assigned to work
+- The Game_Song_List__c must have at least 24 songs (via Game_Song_List_Item__c records) to generate boards
 - The center square (row 3, column 3) is always FREE
+- The `Included_In_Game__c` field on Game_Song__c is no longer used - songs are now associated with games through Game_Song_List__c
 - Each player gets a unique random board on page load
 - Bingo detection only works for manually clicked squares
 - The Caller Display page is optimized for TV viewing (large screens)

@@ -25,6 +25,32 @@
     backdrop-filter: blur(10px);
 }
 
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.admin-toggle-button {
+    padding: 8px 16px;
+    background: #1a5a1a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.admin-toggle-button:hover {
+    background: #0f3a0f;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
 .game-title {
     font-size: 2rem;
     font-weight: 700;
@@ -291,6 +317,474 @@
     transform: scale(0.95);
 }
 
+/* ========== ADMIN STYLES ========== */
+
+.admin-container {
+    position: relative;
+    z-index: 1;
+}
+
+.admin-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.admin-tab {
+    flex: 1;
+    padding: 12px 16px;
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-tab:hover {
+    background: rgba(26, 90, 26, 0.1);
+    color: #1a5a1a;
+}
+
+.admin-tab.active {
+    background: #1a5a1a;
+    color: white;
+    border-color: #1a5a1a;
+}
+
+.admin-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    margin-bottom: 24px;
+}
+
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid #c8102e;
+}
+
+.admin-section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a5a1a;
+    margin: 0;
+}
+
+.admin-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-button.primary {
+    background: #1a5a1a;
+    color: white;
+}
+
+.admin-button.primary:hover {
+    background: #0f3a0f;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.admin-button.secondary {
+    background: #666;
+    color: white;
+}
+
+.admin-button.secondary:hover {
+    background: #555;
+}
+
+.admin-button.small {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+.admin-button-icon {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.admin-button-icon:hover {
+    background: rgba(0, 0, 0, 0.1);
+    transform: scale(1.1);
+}
+
+.admin-button-icon.danger:hover {
+    background: rgba(200, 16, 46, 0.2);
+}
+
+.admin-button-icon.add {
+    color: #1a5a1a;
+}
+
+.admin-button-icon.add:hover {
+    background: rgba(26, 90, 26, 0.2);
+}
+
+.admin-form {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 2px solid #1a5a1a;
+}
+
+.admin-form h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a5a1a;
+    margin: 0 0 16px 0;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #1a5a1a;
+    box-shadow: 0 0 0 3px rgba(26, 90, 26, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-list-item {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 16px;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-list-item:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-list-item.selected {
+    border-color: #1a5a1a;
+    background: rgba(26, 90, 26, 0.05);
+}
+
+.admin-list-item-content {
+    flex: 1;
+    cursor: pointer;
+    min-width: 0;
+}
+
+.admin-list-item-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.song-info, .game-info {
+    min-width: 0;
+}
+
+.list-name, .game-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a5a1a;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.game-details {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.active-badge {
+    background: #1a5a1a;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.admin-list-detail {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 2px solid #ddd;
+}
+
+.admin-list-detail h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a5a1a;
+    margin: 0 0 16px 0;
+}
+
+.admin-subsection {
+    margin-bottom: 24px;
+}
+
+.admin-subsection h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 12px 0;
+}
+
+/* ========== ADMIN SEARCH ========== */
+
+.admin-search-container {
+    margin-bottom: 16px;
+}
+
+.admin-search-input {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.admin-search-input:focus {
+    outline: none;
+    border-color: #1a5a1a;
+    box-shadow: 0 0 0 3px rgba(26, 90, 26, 0.1);
+}
+
+/* ========== COMPACT LIST ITEMS ========== */
+
+.admin-list.compact {
+    gap: 4px;
+}
+
+.admin-list-item.compact {
+    padding: 8px 12px;
+    min-height: auto;
+}
+
+.admin-list-item-content.compact {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.song-info.compact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.song-name.compact {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a5a1a;
+    margin: 0;
+}
+
+.song-artist.compact {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0;
+}
+
+/* ========== LIST MANAGEMENT ========== */
+
+.admin-instructions {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    margin-top: 24px;
+    border: 2px dashed #ddd;
+}
+
+.admin-instructions p {
+    font-size: 1.1rem;
+    color: #666;
+    margin: 0;
+}
+
+.list-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #ddd;
+}
+
+.list-management-header h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a5a1a;
+    margin: 0;
+}
+
+.list-song-counter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.counter-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a5a1a;
+}
+
+.counter-value.invalid {
+    color: #c8102e;
+}
+
+.counter-help {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.list-management-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+}
+
+.list-management-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.unsaved-indicator {
+    color: #c8102e;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-left: auto;
+}
+
+.two-list-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.list-column {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 16px;
+    border: 2px solid #ddd;
+}
+
+.list-column-header {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a5a1a;
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #1a5a1a;
+}
+
+.admin-list.scrollable {
+    max-height: 400px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.admin-list.scrollable::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin-list.scrollable::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.admin-list.scrollable::-webkit-scrollbar-thumb {
+    background: #1a5a1a;
+    border-radius: 3px;
+}
+
+
 @media (max-width: 768px) {
     .played-songs-panel {
         max-height: 300px;
@@ -304,6 +798,72 @@
         min-width: 35px;
         font-size: 0.8rem;
         padding: 5px 8px;
+    }
+    
+    .header-top {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .game-title {
+        font-size: 1.5rem;
+    }
+    
+    .admin-toggle-button {
+        width: 100%;
+    }
+    
+    .admin-tabs {
+        flex-direction: column;
+    }
+    
+    .admin-section-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .admin-button {
+        width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .admin-list-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .admin-list-item-actions {
+        justify-content: flex-end;
+    }
+    
+    .list-management-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .list-song-counter {
+        align-items: flex-start;
+    }
+    
+    .two-list-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .list-management-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .unsaved-indicator {
+        margin-left: 0;
+        text-align: center;
     }
 }
 

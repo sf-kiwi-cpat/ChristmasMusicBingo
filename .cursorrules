@@ -1,0 +1,33 @@
+# Cursor AI Rules for Salesforce LWC Development
+
+## Lightning Web Component (LWC) Template Restrictions
+
+When working with LWC templates (.html files), NEVER use:
+
+1. **Ternary operators** in template expressions
+   - ❌ `{condition ? value1 : value2}`
+   - ✅ Use getters in .js: `get computedValue() { return condition ? value1 : value2; }`
+
+2. **Comparison operators** in template expressions
+   - ❌ `{value === otherValue}`
+   - ❌ `{adminTab === 'songs'}`
+   - ✅ Use getters: `get isSongsTab() { return this.adminTab === 'songs'; }`
+
+3. **Function calls** in template expressions
+   - ❌ `{getClass(item.Id)}`
+   - ✅ Compute in data: `item.cssClass = getClass(item.Id)` when processing data
+
+4. **Unary operators** in template expressions
+   - ❌ `{!value}`
+   - ✅ Use getters: `get isDisabled() { return !this.value; }`
+
+## Always Remember
+
+- LWC templates only support: simple property access, getters, and boolean values
+- Complex expressions MUST be computed in JavaScript (getters or data processing)
+- When in doubt, create a getter method in the .js file
+
+## Reference
+
+See `LWC_CODING_GUIDELINES.md` for detailed examples and patterns.
+

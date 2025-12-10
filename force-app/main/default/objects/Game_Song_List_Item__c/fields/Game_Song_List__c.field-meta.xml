@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Game_Song_List__c</fullName>
+    <label>Game Song List</label>
+    <referenceTo>Game_Song_List__c</referenceTo>
+    <relationshipLabel>Game Song List Items</relationshipLabel>
+    <relationshipName>Game_Song_List_Items</relationshipName>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+</CustomField>
