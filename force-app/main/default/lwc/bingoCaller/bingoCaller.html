@@ -7,6 +7,14 @@
         </template>
         
         <template if:false={isLoading}>
+            <!-- QR Code - Large and centered when no songs played, top right when songs exist -->
+            <div class={qrCodeContainerClass}>
+                <div class="qr-code-content">
+                    <div class="qr-code-title">Scan to play</div>
+                    <img src={qrCodeUrl} alt="QR Code" class={qrCodeImageClass} />
+                </div>
+            </div>
+            
             <!-- Last Called Section -->
             <template if:true={lastCalledSong}>
                 <div class={lastCalledClass}>

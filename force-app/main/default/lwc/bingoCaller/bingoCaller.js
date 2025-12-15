@@ -3,6 +3,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 import getActiveGame from '@salesforce/apex/GameController.getActiveGame';
 import getPlayedSongsForCaller from '@salesforce/apex/CallerController.getPlayedSongsForCaller';
+import BingoQRCode from '@salesforce/resourceUrl/BingoQRCode';
 
 export default class BingoCaller extends LightningElement {
     @track activeGame;
@@ -14,6 +15,7 @@ export default class BingoCaller extends LightningElement {
     wiredPlayedSongs;
     pollInterval;
     isInitialLoad = true;
+    qrCodeUrl = BingoQRCode;
     
     @wire(getActiveGame)
     wiredGame({ error, data }) {
@@ -151,6 +153,18 @@ export default class BingoCaller extends LightningElement {
             classes += ' flash';
         }
         return classes;
+    }
+    
+    get hasPlayedSongs() {
+        return this.playedSongs && this.playedSongs.length > 0;
+    }
+    
+    get qrCodeContainerClass() {
+        return this.hasPlayedSongs ? 'qr-code-container qr-code-top-right' : 'qr-code-container qr-code-centered';
+    }
+    
+    get qrCodeImageClass() {
+        return this.hasPlayedSongs ? 'qr-code-image qr-code-small' : 'qr-code-image qr-code-large';
     }
     
     scrollToSongInList(songId) {
