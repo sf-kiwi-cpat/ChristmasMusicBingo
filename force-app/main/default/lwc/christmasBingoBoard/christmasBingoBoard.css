@@ -650,3 +650,191 @@
     }
 }
 
+/* Setup Instructions Styles */
+.setup-instructions {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px 24px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+}
+
+.setup-content {
+    text-align: center;
+}
+
+.setup-title {
+    font-size: 2.5rem;
+    color: #1a5a1a;
+    margin: 0 0 32px 0;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.setup-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+    text-align: left;
+}
+
+.setup-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 24px;
+    background: rgba(26, 90, 26, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #1a5a1a;
+    transition: all 0.3s ease;
+}
+
+.setup-step:hover {
+    background: rgba(26, 90, 26, 0.1);
+    transform: translateX(4px);
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    background: #1a5a1a;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(26, 90, 26, 0.3);
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h3 {
+    font-size: 1.5rem;
+    color: #1a5a1a;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.step-content p {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.step-content strong {
+    color: #1a5a1a;
+    font-weight: 600;
+}
+
+.setup-note {
+    padding: 20px;
+    background: rgba(200, 16, 46, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #c8102e;
+}
+
+.setup-note p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.setup-note strong {
+    color: #c8102e;
+}
+
+/* Responsive styles for setup instructions */
+@media (max-width: 768px) {
+    .setup-instructions {
+        margin: 20px auto;
+        padding: 32px 20px;
+    }
+    
+    .setup-title {
+        font-size: 2rem;
+        margin-bottom: 24px;
+    }
+    
+    .setup-steps {
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+    
+    .setup-step {
+        padding: 20px;
+        gap: 16px;
+    }
+    
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+    
+    .step-content h3 {
+        font-size: 1.3rem;
+    }
+    
+    .step-content p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .setup-instructions {
+        margin: 16px auto;
+        padding: 24px 16px;
+    }
+    
+    .setup-title {
+        font-size: 1.75rem;
+        margin-bottom: 20px;
+    }
+    
+    .setup-steps {
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+    
+    .setup-step {
+        padding: 16px;
+        gap: 12px;
+        flex-direction: column;
+    }
+    
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: 1.2rem;
+    }
+    
+    .step-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .step-content p {
+        font-size: 0.95rem;
+    }
+    
+    .setup-note {
+        padding: 16px;
+    }
+    
+    .setup-note p {
+        font-size: 0.9rem;
+    }
+}
+

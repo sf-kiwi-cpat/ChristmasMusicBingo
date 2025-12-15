@@ -13,6 +13,50 @@
     padding: 40px;
 }
 
+.no-game-message {
+    width: 100%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px 24px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 1;
+}
+
+.no-game-content {
+    text-align: center;
+}
+
+.no-game-content h2 {
+    font-size: 2rem;
+    color: #1a5a1a;
+    margin: 0 0 16px 0;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-game-content p {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 12px 0;
+    line-height: 1.6;
+}
+
+.no-game-content strong {
+    color: #1a5a1a;
+    font-weight: 600;
+}
+
+.admin-toggle-button.large {
+    margin-top: 24px;
+    padding: 14px 32px;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
 .header-section {
     text-align: center;
     margin-bottom: 32px;
@@ -864,6 +908,26 @@
     .unsaved-indicator {
         margin-left: 0;
         text-align: center;
+    }
+    
+    .no-game-message {
+        margin: 20px auto;
+        padding: 32px 20px;
+    }
+    
+    .no-game-content h2 {
+        font-size: 1.75rem;
+        margin-bottom: 12px;
+    }
+    
+    .no-game-content p {
+        font-size: 1rem;
+        margin: 10px 0;
+    }
+    
+    .admin-toggle-button.large {
+        width: 100%;
+        margin-top: 20px;
     }
 }
 

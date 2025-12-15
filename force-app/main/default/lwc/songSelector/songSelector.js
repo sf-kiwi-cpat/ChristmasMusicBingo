@@ -71,6 +71,7 @@ export default class SongSelector extends LightningElement {
     @track showListForm = false;
     @track showGameForm = false;
     
+    wiredGame;
     wiredAvailableSongs;
     wiredPlayedSongs;
     wiredAllSongs;
@@ -80,14 +81,19 @@ export default class SongSelector extends LightningElement {
     wiredAvailableSongsForList;
     
     @wire(getActiveGame)
-    wiredGame({ error, data }) {
-        if (data) {
+    wiredGameResult(result) {
+        this.wiredGame = result;
+        const { error, data } = result;
+        if (error) {
+            this.showError('Error loading game', error.body?.message || 'Unknown error');
+            this.activeGame = null;
+            this.isLoading = false;
+        } else if (data !== undefined) {
+            // data can be null (no active game) or an object (active game exists)
             this.activeGame = data;
             this.isLoading = false;
-        } else if (error) {
-            this.showError('Error loading game', error.body?.message || 'Unknown error');
-            this.isLoading = false;
         }
+        // If data is undefined, wire is still loading - keep isLoading = true
     }
     
     @wire(getAvailableSongs, { gameId: '$activeGame.Id' })
@@ -485,6 +491,13 @@ export default class SongSelector extends LightningElement {
         this.newSongName = '';
         this.newSongArtist = '';
         this.showSongForm = true;
+        // Focus the song name input after the form is rendered
+        setTimeout(() => {
+            const songNameInput = this.template.querySelector('[data-song-name-input]');
+            if (songNameInput) {
+                songNameInput.focus();
+            }
+        }, 0);
     }
     
     handleSongNameChange(event) {

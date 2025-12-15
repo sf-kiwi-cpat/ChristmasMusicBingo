@@ -3,7 +3,6 @@
     <fullName>All_Songs</fullName>
     <columns>NAME</columns>
     <columns>Artist__c</columns>
-    <columns>Included_In_Game__c</columns>
     <filterScope>Everything</filterScope>
     <label>All Songs</label>
 </ListView>

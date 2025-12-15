@@ -12,6 +12,7 @@ export default class ChristmasBingoBoard extends LightningElement {
     @track isLoading = true;
     @track autoMarkEnabled = false; // Default to manual marking
     @track showBingoFlash = false;
+    @track boardGenerationFailed = false; // Track if board generation failed
     hadBingoBefore = false; // Track if bingo existed before current action
     bingoFlashTimeout = null; // Store timeout ID for bingo flash auto-hide
     
@@ -66,18 +67,24 @@ export default class ChristmasBingoBoard extends LightningElement {
     
     loadBoard() {
         this.isLoading = true;
+        this.boardGenerationFailed = false;
         generateBoard()
             .then(result => {
                 if (result && result.length > 0) {
                     this.boardSongs = result;
                     this.arrangeBoard();
+                    this.boardGenerationFailed = false;
                 } else {
+                    this.boardSongs = [];
+                    this.boardGenerationFailed = true;
                     this.showError('No Songs Available', 'No songs found. Please add at least 24 songs to the game.');
                 }
                 this.isLoading = false;
             })
             .catch(error => {
                 console.error('Error generating board:', error);
+                this.boardSongs = [];
+                this.boardGenerationFailed = true;
                 const errorMessage = error.body?.message || error.message || 'Unknown error. Please check guest user permissions for Game_Song__c object.';
                 this.showError('Error generating board', errorMessage);
                 this.isLoading = false;
@@ -93,6 +100,8 @@ export default class ChristmasBingoBoard extends LightningElement {
             
             if (!this.boardSongs || this.boardSongs.length < 24) {
                 console.error('Not enough songs to arrange board:', this.boardSongs?.length);
+                this.boardSongs = [];
+                this.boardGenerationFailed = true;
                 this.showError('Insufficient Songs', 'Not enough songs available. Need at least 24 songs.');
                 this.isLoading = false;
                 return;
@@ -446,6 +455,28 @@ export default class ChristmasBingoBoard extends LightningElement {
                 variant: 'error'
             })
         );
+    }
+    
+    // Getters for setup instructions
+    get showSetupInstructions() {
+        return !this.activeGame || this.boardGenerationFailed || !this.boardSongs || this.boardSongs.length === 0;
+    }
+    
+    get hasNoGame() {
+        return !this.activeGame;
+    }
+    
+    get hasNoSongs() {
+        // If there's a game but board generation failed or board is empty, it means no songs
+        return this.activeGame && (this.boardGenerationFailed || !this.boardSongs || this.boardSongs.length === 0);
+    }
+    
+    get stepNumberForSongs() {
+        return this.hasNoGame ? '2' : '1';
+    }
+    
+    get stepNumberForAssign() {
+        return this.hasNoGame ? '3' : '2';
     }
 }
 

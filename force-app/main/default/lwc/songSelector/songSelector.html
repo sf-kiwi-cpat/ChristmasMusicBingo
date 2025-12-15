@@ -7,6 +7,25 @@
         </template>
         
         <template if:false={isLoading}>
+            <!-- No Active Game Message -->
+            <template if:false={activeGame}>
+                <div class="no-game-message">
+                    <div class="no-game-content">
+                        <h2>🎄 No Active Game Found 🎄</h2>
+                        <p>You need to create a game before you can use the song selector.</p>
+                        <p>Click the <strong>Admin</strong> button below to create your first game.</p>
+                        <button 
+                            class="admin-toggle-button large" 
+                            onclick={handleToggleAdminMode}
+                            title={adminToggleTitle}>
+                            Admin
+                        </button>
+                    </div>
+                </div>
+            </template>
+            
+            <!-- Active Game Content -->
+            <template if:true={activeGame}>
             <div class="header-section">
                 <div class="header-top">
                     <h1 class="game-title">{activeGame.Event_Description__c}</h1>
@@ -97,8 +116,9 @@
                 </template>
             </div>
             </template>
+            </template>
             
-            <!-- Admin Mode -->
+            <!-- Admin Mode (always available, even without active game) -->
             <template if:true={adminMode}>
                 <div class="admin-container">
                     <!-- Admin Tabs -->
@@ -142,6 +162,7 @@
                                     <input 
                                         type="text" 
                                         class="form-input" 
+                                        data-song-name-input
                                         value={newSongName}
                                         oninput={handleSongNameChange}
                                         placeholder="Enter song name"
@@ -449,7 +470,12 @@
                                                     </template>
                                                 </div>
                                                 <div class="game-details">
-                                                    List: {game.Game_Song_List__r.Name}
+                                                    <template if:true={game.Game_Song_List__r}>
+                                                        List: {game.Game_Song_List__r.Name}
+                                                    </template>
+                                                    <template if:false={game.Game_Song_List__r}>
+                                                        List: (Not assigned)
+                                                    </template>
                                                 </div>
                                             </div>
                                         </div>
